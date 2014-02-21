@@ -1,0 +1,329 @@
+<!doctype html>
+<html lang="en">
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/> 
+<head>
+  <meta charset="utf-8">
+  <title>Reddit Image Viewer</title>
+ 
+  	<style type="text/css">
+
+		  #header
+      {
+			   top:0px;
+         margin-left:4%;
+         margin-bottom: 10px;
+			   height:25px;
+         width: 100%;
+         position: fixed;
+         z-index: 100;
+         background-color: white;
+         opacity:0.9;
+      }
+      #space{
+        margin-top: 10px;
+        height:10px;
+        width: 100%;
+        z-index:100;
+        background:white;
+      }
+
+  		#windowsize{
+        margin-left: 4%;
+         margin-top:10px;
+  			 height: 100%;
+  			 width: 100%;
+  			 }
+
+
+
+  		img {
+   			height: auto;
+    		width: auto;
+    		max-width: 30%;
+    		max-height: 100%;
+    		float: left;
+        margin: 5px;
+        min-width: 30%;
+        /*min-height: 300px;*/
+  			}
+
+    @media screen and (max-width: 720px) {
+
+      #header
+      {
+         top:0px;
+         margin-left: 0px;
+         margin-bottom: 10px;
+         height:25px;
+         width: 100%;
+         position: fixed;
+         z-index: 100;
+         background-color: white;
+         opacity:0.9;
+      }
+      #windowsize{
+        margin-left:5px;
+        margin-top:10px;
+        height: 100%;
+        width: 100%;
+        }
+
+      img{
+        height: auto;
+        width: auto;
+        max-width: 45%;
+        max-height: 100%;
+        float: left;
+        margin: 5px;
+        }
+    }
+
+
+    @media screen and (max-width: 600px) {
+
+      #header
+      {
+         top:0px;
+         margin-left: 0px;
+         margin-bottom: 10px;
+         height:25px;
+         width: 100%;
+         position: fixed;
+         z-index: 100;
+         background-color: white;
+         opacity:0.9;
+      }
+      #windowsize{
+        margin-left:0px;
+        margin-top:10px;
+        height: 100%;
+        width: 100%;
+        }
+
+      img{
+        height: auto;
+        width: auto;
+        max-width: 100%;
+        max-height: 100%;
+        float: left;
+        margin: 5px;
+        }
+    }
+    @media only screen and (max-device-width: 480px) {
+      img{
+        height: auto;
+        width: auto;
+        max-width: 100%;
+        max-height: 100%;
+        float: left;
+        margin: 5px;
+       }
+    }
+    </style>
+
+	<script type="text/javascript">
+
+     // Just google analytics stuff
+		 (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  			(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  			m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  			})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  			ga('create', 'UA-42066658-1', 'calebfreed.com');
+  			ga('send', 'pageview');
+
+	</script>
+  <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+  <script src="underscore/underscore.js"></script>
+
+</head>
+<body>
+	<div id="header">
+	Reddit Viewer v0.2
+  <!-- <div id="debug0">Enjoy the nakie pics!</div> -->
+  <!-- <div id="debug1">info</div> -->
+
+  <!-- Add subreddits here: -->
+  <select id="subredditselect" onchange ="fetchstuff(this.value, 1, 0)">
+  <option value="iwallpaper">MobileWallpapers</options>
+  <option value="nocontext_wallpapers">NoContextWalls</options>
+  <option value="pics">pics</option>
+  <option value="EarthPorn">EarthPics</option>
+  <option value="funny">funny</option>
+  <option value="itookapicture">itookapicture</option>
+  <option selected="selected" value="adviceanimals">adviceanimals</option>
+  </select>
+  </div>
+
+  <div id = "space"></div>
+ 
+<!-- <div id="images"></div> -->
+ 
+
+
+
+
+<div id = "windowsize">
+
+<div id="first"> </div>
+
+</div>
+
+<script>
+
+
+var newstuff = 0;
+var end = 0;
+var loaded = 0;
+var aftername;
+var pages = 0;
+var interval;
+var reddits;
+var images;
+countnodes();
+var pageHeight = document.documentElement.clientHeight;
+
+
+function countnodes(){
+	var num = $("#first img").length;
+  //debug0.innerHTML = num;
+	return num;
+}
+
+fetchstuff("adviceanimals", 1, 0);
+
+//Functions to add:
+//Load single image on timeframe
+//If not image link, load in iframe
+function fetchstuff(subreddit, newsub, numpages){
+  console.log(subreddit);
+  pages = numpages;
+  pages++;
+  removedivs();
+  if(newsub == 1)
+  {
+    removedivs();
+    console.log("newsub");
+    end = 0;
+  }
+  if(newstuff == 1)
+  {
+    reddits = 'http://www.reddit.com/r/'+subreddit+'/.json?limit=100&jsonp=?&after='+aftername+'&';
+    newstuff = 0;
+  }
+  else
+  {
+    reddits = 'http://www.reddit.com/r/'+subreddit+'/.json?limit=100&jsonp=?';
+  } 
+
+  if(countnodes() < (100))
+  {
+    $.getJSON(reddits,function(data){
+      var len = data.data.children.length;
+      images = data;
+      console.log(len);
+      console.log(data.data.children[len-1].data.name);
+      if(data.data.after == null)
+      {
+        end = 1;
+      }
+      else
+      {
+        aftername = data.data.after;
+      }
+      countnodes();
+    //})
+    //.done(function(data) {
+      console.log(numpages);
+      loaded = 0;
+        $.each(data.data.children, function(i,item){
+              $("img").error(function(){
+                $(this).hide();
+              });  
+            if(checkURL(item.data.url))
+            {
+                $("<img />").attr("src", item.data.url).appendTo("#first");
+                console.log(item.data.url);
+            }
+
+            countnodes();
+
+        });
+      interval= setInterval('scroll();', 250);
+    });
+  }
+      console.log(countnodes());
+
+  countnodes();
+}
+
+//remove images
+function removedivs(){
+  // debug1.innerHTML = "inside remove";
+  while(countnodes() != 0)
+  {
+
+    $("#first img").remove();
+
+	}
+  //pages = 0;
+  // debug1.innerHTML = "inside remove";
+}
+
+function checkURL(url) {
+    return(url.match(/\.(jpeg|jpg|gif|png)$/) != null);
+}
+
+// Removes the divs when continuously scrolling
+function remove_extra_divs(num_divs_left){
+
+  var thingy= document.getElementById("first");
+  while(thingy.childNodes.length != (num_divs_left+1))
+  {
+
+     var d = document.getElementById('first');
+     var r = document.getElementById('pic');
+     d.removeChild(r);
+     thingy= document.getElementById("first");
+
+  }
+}
+
+// Function to implement endless scrolling
+function scroll(){
+	var scrollLimit = Math.max( document.body.scrollHeight, document.body.offsetHeight, 
+                   document.documentElement.clientHeight, document.documentElement.scrollHeight, document.documentElement.offsetHeight );
+	var scrollPosition = window.pageYOffset;
+	//var count = document.getElementById('p3');
+	//var divcount = countnodes();
+	//count.innerHTML = ''+pageHeight+', scroll position: '+scrollPosition+' <p>max scroll: '+scrollLimit+' nodes: '+divcount+'';
+	if(scrollLimit - scrollPosition - pageHeight <= 0 && loaded == 0)
+	{
+      console.log("Bottom of page");
+			//var selectvar = document.getElementById("subredditselect").value;
+      var things = document.getElementById("subredditselect").value;
+			
+      //pages++;
+      loaded = 1;
+      if(end != 1)
+      {
+        newstuff = 1;
+        window.scrollTo(0,0);
+        clearInterval(interval);
+        _.debounce(fetchstuff(things, 0, pages),10000, true);
+      }
+      else
+      {
+        console.log("end");
+      }
+			   
+      
+	}
+}
+
+
+ </script>
+
+ 
+</body>
+</html>
