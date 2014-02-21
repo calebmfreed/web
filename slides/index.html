@@ -19,25 +19,18 @@
          background-color: white;
          opacity:0.9;
       }
-/*      #space{
-        margin-top: 10px;
-        height:10px;
-        width: 100%;
-        z-index:100;
-        background:white;
-      }*/
+
 
   		#windowsize{
          margin-left: 0;
          margin-top:0px;
   			 height: 100%;
   			 width: 100%;
-         /*background-color: #B8B8B8;*/
+         background-color: #B8B8B8;
   			 }
 
       #imgdiv
       {
-        /*display: block;*/
         margin-top: 25px;
         margin-left: 2px;
         margin-right: 0px;
@@ -51,7 +44,6 @@
 
       #imgdiv1
       {
-        /*display: block;*/
         margin-top: 25px;
         margin-left: 2px;
         margin-right: 0px;
@@ -75,80 +67,11 @@
         
     		float: none;
         box-shadow: 5px 5px 2px #888888;
-        /*min-height: 300px;*/
   			}
-
-/*    @media screen and (max-width: 720px) {
-
-      #header
-      {
-         top:0px;
-         margin-left: 0px;
-         margin-bottom: 10px;
-         height:25px;
-         width: 100%;
-         position: fixed;
-         z-index: 100;
-         background-color: white;
-         opacity:0.9;
-      }
-      #windowsize{
-        margin-left:5px;
-        margin-top:10px;
-        height: 100%;
-        width: 100%;
-        }
-
-      img{
-        height: auto;
-        width: auto;
-        max-width: 45%;
-        max-height: 100%;
-        float: left;
-        margin: 5px;
-        }
-    }*/
-
 
     @media screen and (max-width: 600px) {
 
-/*      #header
-      {
-         top:0px;
-         margin-left: 0px;
-         margin-bottom: 10px;
-         height:25px;
-         width: 100%;
-         position: fixed;
-         z-index: 100;
-         background-color: white;
-         opacity:0.9;
-      }
-      #windowsize{
-        margin-left:0px;
-        margin-top:10px;
-        height: 100%;
-        width: 100%;
-        }
 
-      img{
-        height: auto;
-        width: auto;
-        max-width: 100%;
-        max-height: 100%;
-        float: left;
-        margin: 5px;
-        }
-    }
-
-    @media only screen and (max-device-width: 480px) {
-      #windowsize{
-        margin-left: auto;
-        margin-right: auto;
-         margin-top: 8%;
-         height: 100%;
-         width: 100%;
-         }*/
       #header
       {
          top:0px;
@@ -163,7 +86,6 @@
       }
       #imgdiv
       {
-        /*display: block;*/
         margin-top: 25px;
         margin-left: 2px;
         margin-right: 0px;
@@ -180,7 +102,6 @@
          margin-top:0px;
          height: 100%;
          width: 100%;
-         /*background-color: #B8B8B8;*/
          }
 
       #first
@@ -200,7 +121,6 @@
         max-height: 45%;
         float: none;
         box-shadow: 10px 10px 5px #888888;
-        /*min-height: 300px;*/
         }
 
       #header
@@ -249,8 +169,6 @@
 <body>
 	<div id="header">
 	Reddit Slides v0.2
-  <!-- <div id="debug0">Enjoy the nakie pics!</div> -->
-  <!-- <div id="debug1">info</div> -->
 
   <!-- Add subreddits here: -->
   <select id="subredditselect" onchange ="fetchstuff(this.value, 1, 0)">
@@ -276,12 +194,6 @@
 
   <div id = "space"></div>
  
-<!-- <div id="images"></div> -->
- 
-
-
-
-
 <div id = "windowsize">
 
 <div id="first"> </div>
@@ -316,7 +228,6 @@ var pageHeight = document.documentElement.clientHeight;
 
 function countnodes(){
 	var num = $("#first img").length;
-  //debug0.innerHTML = num;
 	return num;
 }
 
@@ -370,17 +281,9 @@ function fetchstuff(subreddit, newsub, numpages){
         aftername = data.data.after;
       }
       countnodes();
-    //})
-    //.done(function(data) {
       console.log(numpages);
       loaded = 0;
-        //$.each(data.data.children, function(i,item){
 
-        //    $("<img />").attr("src", item.data.url).appendTo("#first");
-        //    console.log(item.data.url);
-        //    countnodes();
-
-        //});
       display();
       interval= setInterval("display();", document.getElementById("speed").value);
     });
@@ -452,67 +355,14 @@ function checkURL(url) {
 
 //remove images
 function removedivs(){
-  // debug1.innerHTML = "inside remove";
   while(countnodes() != 0)
   {
 
     $("#first img").remove();
     $("#imgdiv").remove();
     $("#imgdiv1").remove();
-
-
-
 	}
-  //pages = 0;
-  // debug1.innerHTML = "inside remove";
 }
-
-// function remove_extra_divs(num_divs_left){
-
-// //   var thingy= document.getElementById("first");
-// //   while(thingy.childNodes.length != (num_divs_left+1))
-// //   {
-
-// //      var d = document.getElementById('first');
-// //      var r = document.getElementById('pic');
-// //      d.removeChild(r);
-// //      thingy= document.getElementById("first");
-
-// //   }
-// // }
-
-
-// function scroll(){
-// 	var scrollLimit = Math.max( document.body.scrollHeight, document.body.offsetHeight, 
-//                    document.documentElement.clientHeight, document.documentElement.scrollHeight, document.documentElement.offsetHeight );
-// 	var scrollPosition = window.pageYOffset;
-// 	//var count = document.getElementById('p3');
-// 	//var divcount = countnodes();
-// 	//count.innerHTML = ''+pageHeight+', scroll position: '+scrollPosition+' <p>max scroll: '+scrollLimit+' nodes: '+divcount+'';
-// 	if(scrollLimit - scrollPosition - pageHeight <= 0 && loaded == 0)
-// 	{
-//       console.log("Bottom of page");
-// 			//var selectvar = document.getElementById("subredditselect").value;
-//       var things = document.getElementById("subredditselect").value;
-			
-//       //pages++;
-//       loaded = 1;
-//       if(end != 1)
-//       {
-//         newstuff = 1;
-//         window.scrollTo(0,0);
-//         clearInterval(interval);
-//         _.debounce(fetchstuff(things, 0, pages),10000, true);
-//       }
-//       else
-//       {
-//         console.log("end");
-//       }
-			   
-      
-// 	}
-// }
-
 
  </script>
 

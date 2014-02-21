@@ -140,8 +140,6 @@
 <body>
 	<div id="header">
 	Reddit Viewer v0.2
-  <!-- <div id="debug0">Enjoy the nakie pics!</div> -->
-  <!-- <div id="debug1">info</div> -->
 
   <!-- Add subreddits here: -->
   <select id="subredditselect" onchange ="fetchstuff(this.value, 1, 0)">
@@ -157,7 +155,6 @@
 
   <div id = "space"></div>
  
-<!-- <div id="images"></div> -->
  
 
 
@@ -186,7 +183,6 @@ var pageHeight = document.documentElement.clientHeight;
 
 function countnodes(){
 	var num = $("#first img").length;
-  //debug0.innerHTML = num;
 	return num;
 }
 
@@ -232,8 +228,6 @@ function fetchstuff(subreddit, newsub, numpages){
         aftername = data.data.after;
       }
       countnodes();
-    //})
-    //.done(function(data) {
       console.log(numpages);
       loaded = 0;
         $.each(data.data.children, function(i,item){
@@ -259,15 +253,12 @@ function fetchstuff(subreddit, newsub, numpages){
 
 //remove images
 function removedivs(){
-  // debug1.innerHTML = "inside remove";
   while(countnodes() != 0)
   {
 
     $("#first img").remove();
 
 	}
-  //pages = 0;
-  // debug1.innerHTML = "inside remove";
 }
 
 function checkURL(url) {
@@ -294,16 +285,11 @@ function scroll(){
 	var scrollLimit = Math.max( document.body.scrollHeight, document.body.offsetHeight, 
                    document.documentElement.clientHeight, document.documentElement.scrollHeight, document.documentElement.offsetHeight );
 	var scrollPosition = window.pageYOffset;
-	//var count = document.getElementById('p3');
-	//var divcount = countnodes();
-	//count.innerHTML = ''+pageHeight+', scroll position: '+scrollPosition+' <p>max scroll: '+scrollLimit+' nodes: '+divcount+'';
 	if(scrollLimit - scrollPosition - pageHeight <= 0 && loaded == 0)
 	{
       console.log("Bottom of page");
-			//var selectvar = document.getElementById("subredditselect").value;
       var things = document.getElementById("subredditselect").value;
 			
-      //pages++;
       loaded = 1;
       if(end != 1)
       {
